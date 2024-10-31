@@ -1,0 +1,153 @@
+:root {
+    --orange: #ff7950;
+    --black: #222222;
+    --white: #ffffff;
+    --trnsparent-white: #ffffff2b;
+  }
+
+/* Reset some default browser styling */
+* {
+    font-family: 'Open Sans';
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background-color: var(--black);
+    color: var(--white); /* Set text color to white for contrast */
+}
+
+/* Style for the navigation bar */
+.navbar {
+    background-color: var(--orange);
+    overflow: hidden;
+    position: fixed;
+    top: 0;
+    width: 100%;
+    border-bottom: 1px solid rgb(56, 56, 56);
+}
+
+/* Style for navigation links */
+.navbar ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.navbar li {
+    display: inline;
+}
+
+.navbar .logo {
+    display: block;
+    color: white;
+    background-color: var(--black);
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: bold;
+
+}
+
+.navbar a {
+    display: block;
+    color: var(--white);
+    text-align: center;
+    padding: 14px 20px;
+    text-decoration: none;
+    font-size: 14px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.navbar a:hover {
+    background-color: var(--trnsparent-white);
+    color: var(--white);
+}
+
+.navbar .current {
+    background-color: var(--white);
+    color: var(--orange);
+}
+
+h1,h2 {
+    color: var(--orange);
+}
+
+/* Padding to make content not hide behind the navbar */
+.content {
+    padding: 80px;
+}
+
+.content .main-content {
+    padding-top: 30px;
+    width: 50%;
+}
+
+#map {
+    height: 550px;
+    width: 100%;
+    border-radius: 20px;
+    overflow: hidden;
+}
+
+.view-project {
+    padding-top: 10px;
+}
+
+.btn {
+    background-color: var(--orange); /* Vibrant orange background */
+    border: none;
+    color: var(--white);
+    padding: 12px 24px;
+    text-align: center;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    cursor: pointer;
+    border-radius: 30px; /* Rounded corners */
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    background-color: var(--white); /* Slightly lighter orange on hover */
+    transform: translateY(-2px); /* Lift button on hover */
+    color: var(--orange);
+}
+
+.btn:active {
+    background-color: var(--orange); /* Darker shade when clicked */
+    transform: translateY(0); /* Return to normal position */
+    color: var(--white);
+}
+
+#notification {
+    display: none;
+    position: fixed;
+    top: 60px;
+    right: 20px;
+    background-color: #f44336;
+    color: white;
+    padding: 15px;
+    border-radius: 5px;
+    z-index: 1000;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+#notification.show {
+    display: block;
+}
+
+.custom-marker {
+    width: 10px;
+    height: 10px;
+    background-color: #0073ff; /* Customize the color */
+    transform: rotate(45deg); /* Rotate the square to create a diamond shape */
+    position: relative;
+    border: 2px solid white; /* Optional: add a border */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* Optional: add shadow */
+}
+
