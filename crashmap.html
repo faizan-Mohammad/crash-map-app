@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crash Map</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://kit.fontawesome.com/fec37a4e39.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <ul>
+            <li class="logo">Faizan Mohammad</li>
+            <li><a href="index.html">Back 🡄</a></li>
+            <li><a href="crashmap.html" class="current">Crash Map</a></li>
+        </ul>
+    </nav>
+
+    <div class="content">
+        <h1>Crash Map</h1>
+        <p style="font-weight: bold;">Finished Project</p>
+        <br>
+ 
+        <div id="map" style="height: 500px;"></div> <!-- Added height for the map -->
+
+        <div id="notification"></div>
+    
+        <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+        <script>
+            let map, currentLocationMarker;
+            const crashZones = [
+            { lat:37.54, lng:-77.43, radius: 500 },
+            { lat:37.55, lng:-77.44, radius: 500 },
+            { lat:37.55, lng:-77.45, radius: 500 },
+            { lat:37.54, lng:-77.44, radius: 500 },
+            { lat:38.85, lng:-77.43, radius: 500 },
+            { lat:36.85, lng:-76.2, radius: 500 },
+            { lat:37.04, lng:-76.39, radius: 500 },
+            { lat:36.83, lng:-76.14, radius: 500 },
+            { lat:37.04, lng:-76.4, radius: 500 },
+            { lat:38.78, lng:-77.18, radius: 500 },
+            { lat:37.55, lng:-77.43, radius: 500 },
+            { lat:36.84, lng:-76.16, radius: 500 },
+            { lat:36.84, lng:-76.14, radius: 500 },
+            { lat:38.67, lng:-77.25, radius: 500 },
+            { lat:37.52, lng:-77.44, radius: 500 },
+            { lat:36.85, lng:-76.18, radius: 500 },
+            { lat:38.24, lng:-77.5, radius: 500 },
+            { lat:37.53, lng:-77.43, radius: 500 },
+            { lat:37.55, lng:-77.46, radius: 500 },
+            { lat:37.57, lng:-77.48, radius: 500 },
+            { lat:37.03, lng:-76.36, radius: 500 },
+            { lat:38.88, lng:-77.23, radius: 500 },
+            { lat:36.84, lng:-76.1, radius: 500 },
+            { lat:38.91, lng:-77.22, radius: 500 },
+            { lat:38.45, lng:-78.87, radius: 500 },
+            { lat:38.8, lng:-77.52, radius: 500 },
+            { lat:38.46, lng:-77.41, radius: 500 },
+            { lat:37.02, lng:-76.44, radius: 500 },
+            { lat:38.3, lng:-77.51, radius: 500 },
+            { lat:38.66, lng:-77.28, radius: 500 },
+            { lat:38.88, lng:-77.22, radius: 500 },
+            { lat:38.87, lng:-77.05, radius: 500 },
+            { lat:38.93, lng:-77.21, radius: 500 },
+            { lat:37.23, lng:-77.4, radius: 500 },
+            { lat:37.65, lng:-77.6, radius: 500 },
+            { lat:38.79, lng:-77.18, radius: 500 },
+            { lat:38.77, lng:-77.18, radius: 500 },
+            { lat:37.56, lng:-77.45, radius: 500 },
+            { lat:37.58, lng:-77.46, radius: 500 },
+            { lat:37.61, lng:-77.52, radius: 500 },
+            { lat:37.54, lng:-77.45, radius: 500 },
+            { lat:37.58, lng:-77.47, radius: 500 },
+            { lat:37.02, lng:-76.33, radius: 500 },
+            { lat:36.85, lng:-75.98, radius: 500 },
+            { lat:37.04, lng:-76.38, radius: 500 },
+            { lat:38.74, lng:-77.19, radius: 500 },
+            { lat:38.81, lng:-77.22, radius: 500 },
+            { lat:37.6, lng:-77.49, radius: 500 },
+            { lat:37.52, lng:-77.45, radius: 500 },
+            { lat:37.57, lng:-77.46, radius: 500 },
+            { lat:37.65, lng:-77.61, radius: 500 },
+            { lat:37.56, lng:-77.47, radius: 500 },
+            { lat:37.1, lng:-76.49, radius: 500 },
+            { lat:37.55, lng:-77.47, radius: 500 },
+            { lat:38.47, lng:-77.41, radius: 500 },
+            { lat:38.06, lng:-78.49, radius: 500 },
+            { lat:37.53, lng:-77.36, radius: 500 },
+            { lat:38.87, lng:-77.22, radius: 500 },
+            { lat:38.23, lng:-77.5, radius: 500 },
+            { lat:36.85, lng:-76.19, radius: 500 },
+            { lat:36.87, lng:-76.28, radius: 500 },
+            { lat:38.88, lng:-77.27, radius: 500 },
+            { lat:36.84, lng:-76.05, radius: 500 },
+            { lat:38.81, lng:-77.05, radius: 500 },
+            { lat:36.85, lng:-76.02, radius: 500 },
+            { lat:38.64, lng:-77.29, radius: 500 },
+            { lat:38.67, lng:-77.26, radius: 500 },
+            { lat:37.27, lng:-79.94, radius: 500 },
+            { lat:37.53, lng:-77.42, radius: 500 },
+            { lat:38.89, lng:-77.22, radius: 500 },
+            { lat:38.83, lng:-77.11, radius: 500 },
+            { lat:37.55, lng:-77.48, radius: 500 },
+            { lat:38.8, lng:-77.05, radius: 500 },
+            { lat:38.92, lng:-77.22, radius: 500 },
+            { lat:38.82, lng:-77.14, radius: 500 },
+            { lat:37.5, lng:-77.53, radius: 500 },
+            { lat:38.3, lng:-77.5, radius: 500 },
+            { lat:38.85, lng:-77.08, radius: 500 },
+            { lat:37.09, lng:-76.46, radius: 500 },
+            { lat:36.91, lng:-76.26, radius: 500 },
+            { lat:38.71, lng:-77.22, radius: 500 },
+            { lat:36.92, lng:-76.27, radius: 500 },
+            { lat:38.3, lng:-77.46, radius: 500 },
+            { lat:36.86, lng:-76.2, radius: 500 },
+            { lat:37.42, lng:-77.64, radius: 500 },
+            { lat:36.84, lng:-76.29, radius: 500 },
+            { lat:36.76, lng:-76.27, radius: 500 },
+            { lat:37.51, lng:-77.61, radius: 500 },
+            { lat:37.12, lng:-76.51, radius: 500 },
+            { lat:38.76, lng:-77.46, radius: 500 },
+            { lat:37.56, lng:-77.41, radius: 500 },
+            { lat:38.86, lng:-77.07, radius: 500 },
+            { lat:36.88, lng:-76.3, radius: 500 },
+            { lat:36.87, lng:-76.2, radius: 500 },
+            { lat:38.69, lng:-77.23, radius: 500 },
+            { lat:36.99, lng:-76.43, radius: 500 },
+            { lat:37.59, lng:-77.47, radius: 500 },
+            { lat:36.85, lng:-76.29, radius: 500 },
+            { lat:36.85, lng:-76.25, radius: 500 },
+            { lat:38.58, lng:-77.32, radius: 500 }
+
+            ];
+            let crashZoneMarkers = [];
+
+            // Function to display the in-page notification
+            function showNotification(message) {
+                const notification = document.getElementById('notification');
+                notification.innerHTML = `<i class="fa-solid fa-triangle-exclamation"></i> &nbsp; ${message}`;
+                notification.classList.add('show');
+
+                // Hide the notification after 3 seconds
+                setTimeout(() => {
+                    notification.classList.remove('show');
+                }, 3000);
+            }
+
+            // Function to repeatedly show the notification every 5 seconds
+            function startNotification(message) {
+                setInterval(() => {
+                    showNotification(message);
+                }, 5000);
+            }
+
+            // Define a custom DivIcon for the current location marker
+            const customDivIcon = L.divIcon({
+                className: 'custom-div-icon', 
+                html: "<div class='custom-marker'></div>", 
+                iconSize: [10, 10], 
+                iconAnchor: [5, 5]
+            });
+
+            // Initialize the map on the first successful geolocation retrieval
+            function initMap(lat, lng) {
+                map = L.map('map').setView([lat, lng], 13);
+
+                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                    attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+                }).addTo(map);
+
+                currentLocationMarker = L.marker([lat, lng], { icon: customDivIcon }).addTo(map)
+                    .bindPopup('You are here!');
+
+                // Add crash zones to the map once
+                crashZones.forEach(function (zone, index) {
+                    const crashCircle = L.circle([zone.lat, zone.lng], {
+                        color: 'blue',
+                        fillColor: '#add8e6',
+                        fillOpacity: 0.5,
+                        radius: zone.radius
+                    }).addTo(map).bindPopup(`Crash Zone ${index + 1}: ${zone.radius}m Radius`);
+
+                    crashZoneMarkers.push(crashCircle); // Store markers to access later if needed
+                });
+            }
+
+            // Function to update the current location on the map
+            function updateMapLocation(lat, lng) {
+                if (currentLocationMarker) {
+                    currentLocationMarker.setLatLng([lat, lng]); // Move marker to new location
+                    map.setView([lat, lng]); // Recenter map on new location
+                }
+            }
+
+            // Function to check if current location is inside a crash zone
+            function isInCrashZone(currentLat, currentLng, crashLat, crashLng, radius) {
+                const distance = Math.sqrt(Math.pow(currentLat - crashLat, 2) + Math.pow(currentLng - crashLng, 2)) * 111000; // Convert degrees to meters
+                return distance <= radius;
+            }
+
+            // Success callback function
+            function success(position) {
+                const currentLatitude = position.coords.latitude;
+                const currentLongitude = position.coords.longitude;
+
+                console.log("Current Coordinates:", currentLatitude, currentLongitude);
+
+                if (!map) {
+                    // Initialize the map only on the first location fetch
+                    initMap(currentLatitude, currentLongitude);
+                } else {
+                    // Update marker position on subsequent updates
+                    updateMapLocation(currentLatitude, currentLongitude);
+                }
+
+                // Check if the current location is inside any crash zones
+                crashZones.forEach(function (zone, index) {
+                    if (isInCrashZone(currentLatitude, currentLongitude, zone.lat, zone.lng, zone.radius)) {
+                        startNotification(`Alert! You are inside Crash Zone ${index + 1}`);
+                    }
+                });
+            }
+
+            // Error callback function
+            function error() {
+                alert("Unable to retrieve your location.");
+            }
+
+            // Function to continuously update the location
+            function updateLocation() {
+                if (navigator.geolocation) {
+                    navigator.geolocation.getCurrentPosition(success, error);
+                } else {
+                    alert("Geolocation is not supported by your browser.");
+                }
+            }
+
+            // Start location updates every 1 second
+            setInterval(updateLocation, 1000);
+        </script>
+    
+    </div>
+</body>
+</html>
